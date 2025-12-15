@@ -307,7 +307,7 @@
 
   #step-faq .faq-scroll { }
 
-  h3 { margin: 0 0 8px; font-size: 18px; }
+  h3 { margin: 0 0 8px; font-size: 35px; }
   h3.big-title { font-size: 25px; line-height: 1.2; font-weight: 800; margin: 0 0 5px; }
   p { margin: 0 0 12px; font-size: 14px; line-height: 1.4; }
 
@@ -737,6 +737,7 @@
     .wf-widget-close-outside { right: 10px; bottom: 10px; }
 
   }
+
 
 
 
