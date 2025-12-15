@@ -344,16 +344,18 @@
     align-self: center;    /* varmistaa keskityksen flexissä */
   }
 
-  #step-type .actions{
-    margin: 0;             /* override: pois "margin: auto 0" */
+  #step-type .actions {
+  width: 100%;
   }
-
+  
   #step-type .btn {
+    width: 100%;
     padding: 8px 9px;
-    font-size: 14px; 
+    font-size: 14px;
     font-weight: 400;
+    justify-content: center;
   }
-
+  
   #step-choices .btn.btn-video-thumb {
     width: min(175px, 100%);
     aspect-ratio: 1 / 1;
@@ -732,4 +734,5 @@
 
     .wf-widget-toggle { right: 10px; bottom: 10px; }
     .wf-widget-close-outside { right: 10px; bottom: 10px; }
+
   }
