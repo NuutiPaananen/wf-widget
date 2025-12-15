@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
 
+/* Testaan vain tuleeko tämä esiin */
+
   :root {
     --font: "Space Grotesk", sans-serif;
 
@@ -737,6 +739,7 @@
     .wf-widget-close-outside { right: 10px; bottom: 10px; }
 
   }
+
 
 
 
