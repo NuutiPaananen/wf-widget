@@ -353,7 +353,8 @@
     padding: 8px 9px;
     font-size: 14px;
     font-weight: 400;
-    justify-content: center; 
+    justify-content: center;
+    background: #000;
   }
   
   #step-choices .btn.btn-video-thumb {
@@ -736,5 +737,6 @@
     .wf-widget-close-outside { right: 10px; bottom: 10px; }
 
   }
+
 
 
