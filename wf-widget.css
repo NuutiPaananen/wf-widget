@@ -1,0 +1,735 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --font: "Space Grotesk", sans-serif;
+
+    --cta-bg: rgba(125,125,125,0.5);
+    --cta-bg-hover: rgba(150,150,150,0.5);
+    --cta-text: #fff;
+    --cta-radius: 6px;
+    --cta-padding: 14px 16px;
+    --cta-font-size: 14px;
+    --cta-font-weight: 400;
+
+    --cta-border: 1px solid rgba(100,100,100,0.5);
+    --cta-blur: blur(1.5px);
+  }
+
+  .wf-widget, .btn, .btn-secondary, .header-title, .widget-label, input, textarea, h3, p {
+    font-family: var(--font);
+  }
+
+  .wf-widget {
+    position: fixed;
+    right: 20px;
+    bottom: 65px;
+    width: min(400px, 100%);
+    aspect-ratio: 9/16;
+    border-radius: 15px;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+    background-image: url("https://cdn.prod.website-files.com/64e45acd7642683305495ca7/691a46b0d9f565c951ebd7b1_mies%20kuvattuna%20studiossa%20kamera%20k%C3%A4dess%C3%A4.avif");
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+    display: flex;
+    flex-direction: column;
+    z-index: 9999;
+
+    transform-origin: 100% 100%;
+    transition:
+      transform 420ms cubic-bezier(0.65, 0, 0.35, 1),
+      opacity 220ms cubic-bezier(0.65, 0, 0.35, 1);
+    will-change: transform, opacity;
+  }
+
+  .wf-widget.is-closed {
+    opacity: 0;
+    transform: scale(0.86);
+    pointer-events: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .wf-widget { transition: none !important; }
+  }
+
+  /* ✅ EXPAND (ensin) — vasemmalle close-napista */
+  .wf-widget-expand{
+    position: absolute;
+    top: 10px;
+    right: 50px; /* ✅ 8 + 34 + 8 */
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 0px solid rgba(25,25,25);
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #fff;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10001;
+    padding: 0;
+    line-height: 1;
+  }
+
+  /* ✅ HEADER CLOSE (X) — oikeassa reunassa */
+  .wf-widget-close{
+    position: absolute;
+    top: 10px;
+    right: 10px; /* ✅ aina oikeassa reunassa */
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 0px solid rgba(25,25,25);
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #fff;
+    display: inline-flex; /* ✅ näkyy myös mobilessa */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10001;
+    padding: 0;
+    line-height: 1;
+  }
+  
+  .wf-widget-back{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 0px solid rgba(25,25,25);
+    background: rgba(0,0,0,0.55);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10001;
+    padding: 0;
+    line-height: 1;
+  }
+
+  /* Piilotus (JS togglaa) */
+  .wf-widget-back.is-hidden{
+    display: none !important;
+  }
+
+  @media (min-width: 768px){
+    .wf-widget-expand{ display: inline-flex; }
+    .wf-widget.is-expanded{
+      width: 650px;
+      max-width: calc(100vw - 40px);
+      aspect-ratio: auto;
+      height: min(80vh, 720px);
+    }
+  }
+
+  .widget-body { flex: 1; position: relative; overflow: hidden; height: 100%; }
+
+  .step { position: absolute; inset: 0; padding: 20px; display: flex; box-sizing: border-box; }
+
+  /* ✅ YKSI YHTEINEN TAUSTA KAIKILLE EI-KUVA STEPEILLE */
+  #step-type,
+  #step-production,
+  #step-form,
+  #step-faq,
+  #step-success,
+  #step-video-loading {
+    background: #0d0d0d;
+  }
+
+  .step-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    color: #fff;
+    height: 100%;
+    min-height: 0;
+  }
+  
+  /* ✅ Lisää tilaa yläreunaan, ettei sisältö jää back/expand-nappien alle */
+  .step-content{
+    padding-top: 44px; /* säädä: 44–64px */
+    box-sizing: border-box;
+  }
+
+  /* ✅ Poikkeus: video- ja loading-stepit eivät tarvitse top-paddingia */
+  #step-video .step-content,
+  #step-video-loading .step-content{
+    padding-top: 0 !important;
+  }
+
+  .actions {
+    margin: auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #step-choices .actions {
+    margin-top: auto;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+
+  #step-production .actions {
+    margin-top: auto;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: flex-end;
+    align-items: stretch;
+  }
+  #step-production .actions .btn { width: 100%; }
+
+  #step-form .widget-form {
+    flex: 1;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #step-form .form-scroll {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 4px;
+    -webkit-overflow-scrolling: touch;
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+  }
+  
+  #step-form .widget-form-group { gap: 8px; }
+
+  .form-cta { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
+
+  .form-cta-btn {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+  }
+
+  /* ✅ Primary CTA perii saman tyylin kuin .btn */
+  .form-cta-btn.primary{
+    padding: var(--cta-padding);
+    border-radius: var(--cta-radius);
+    background: var(--cta-bg);
+    color: var(--cta-text);
+    border: var(--cta-border);
+    font-size: var(--cta-font-size);
+    font-weight: var(--cta-font-weight);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    backdrop-filter: var(--cta-blur);
+    -webkit-backdrop-filter: var(--cta-blur);
+  }
+  .form-cta-btn.primary:hover { background: var(--cta-bg-hover); }
+
+  .form-cta-btn.secondary {
+    background: rgba(255,255,255,0.12);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  
+  /* ✅ Formin alle legal-teksti */
+  #step-form .form-legal{
+    margin: 6px 0 0;
+    font-size: 12px;
+    line-height: 1.35;
+    color: rgba(255,255,255,0.70);
+    text-align: center;
+  }
+
+  #step-form .form-legal a{
+    color: rgba(255,255,255,0.92);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  #step-form .form-legal a:hover{
+    color: #fff;
+  }
+
+  #step-form .form-scroll::-webkit-scrollbar { width: 6px; }
+  #step-form .form-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+  #step-form .form-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.35);
+    border-radius: 999px;
+  }
+  #step-form .form-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.6); }
+
+  #step-form .form-scroll { scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.35) transparent; }
+
+  .wf-scroll{
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .wf-scroll::-webkit-scrollbar { width: 6px; }
+  .wf-scroll::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); }
+  .wf-scroll::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.35);
+    border-radius: 999px;
+  }
+  .wf-scroll::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.6); }
+
+  .wf-scroll{
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255,255,255,0.35) transparent;
+  }
+
+  #step-faq .faq-scroll { }
+
+  h3 { margin: 0 0 8px; font-size: 18px; }
+  h3.big-title { font-size: 25px; line-height: 1.2; font-weight: 800; margin: 0 0 5px; }
+  p { margin: 0 0 12px; font-size: 14px; line-height: 1.4; }
+
+  /* ✅ MASTER NAPPI */
+  .btn {
+    padding: var(--cta-padding);
+    border-radius: var(--cta-radius);
+    background: var(--cta-bg);
+    color: var(--cta-text);
+    border: var(--cta-border);
+    cursor: pointer;
+    font-size: var(--cta-font-size);
+    font-weight: var(--cta-font-weight);
+    white-space: nowrap;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    backdrop-filter: var(--cta-blur);
+    -webkit-backdrop-filter: var(--cta-blur);
+  }
+  .btn:hover { background: var(--cta-bg-hover); }
+
+  /* ✅ Step-type: otsikko keskelle + napit tiiviimmiksi */
+  #step-type .step-content{
+    justify-content: center; /* koko sisältö keskelle */
+  }
+
+  #step-type h3{
+    text-align: center;
+    margin: 0 0 14px;      /* tilaa otsikon ja nappien väliin */
+    max-width: 28ch;       /* siisti rivittyminen */
+    align-self: center;    /* varmistaa keskityksen flexissä */
+  }
+
+  #step-type .actions{
+    margin: 0;             /* override: pois "margin: auto 0" */
+  }
+
+  #step-type .btn {
+    padding: 8px 9px;
+    font-size: 14px; 
+    font-weight: 400;
+  }
+
+  #step-choices .btn.btn-video-thumb {
+    width: min(175px, 100%);
+    aspect-ratio: 1 / 1;
+    padding: 0;
+    border-radius: 10px;
+
+    /* ❌ EI MUUTU CTA-TYYLIKSI */
+    background: #000; /* fallback */
+    border: 0px solid rgba(255,255,255,0.25);
+    overflow: hidden;
+    position: relative;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background-color: transparent;
+  }
+
+  /* Video-container napin sisällä */
+  #step-choices .btn-video-thumb__bg{
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  /* “Cover” iframe:lle (ylisuuri -> ei black bar -reunoja) */
+  #step-choices .btn-video-thumb__bg iframe{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 179%;
+    height: 179%;
+    transform: translate(-50%, -40%);
+    border: 0;
+    pointer-events: none; /* klikki menee napille */
+  }
+
+  /* Gradient overlay videon päälle */
+  #step-choices .btn.btn-video-thumb::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(to top, rgba(0,0,0,0.45), rgba(0,0,0,0.10));
+  }
+
+  #step-choices .btn-video-thumb__play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 56px;
+    height: 56px;
+    border-radius: 999px;
+    background: rgba(0,0,0,0.55);
+    border: 0px solid rgba(255,255,255,0.25);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.45);
+    z-index: 2; /* ✅ overlayn päälle */
+  }
+
+  #step-choices .btn-video-thumb__play::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-42%, -50%);
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 9px 0 9px 14px;
+    border-color: transparent transparent transparent rgba(255,255,255,0.95);
+  }
+
+  /* ✅ reduced-motion: näytä kuva videon sijaan */
+  @media (prefers-reduced-motion: reduce){
+    #step-choices .btn-video-thumb__bg{ display: none; }
+    #step-choices .btn.btn-video-thumb{
+      background-image: url("https://cdn.prod.website-files.com/64e45acd7642683305495ca7/693c04c86c7dfcd944b52b57_website%20img.avif");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+    }
+  }
+
+  /* ============================ */
+
+  .faq-list { display: flex; flex-direction: column; gap: 8px; margin: 10px 0 20px; }
+
+  .faq-item {
+    width: 100%;
+    background: rgba(25,25,25);
+    border: 1px solid rgba(45,45,45);
+    border-radius: 5px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    color: #fff;
+    cursor: pointer;
+    box-sizing: border-box;
+    gap: 8px;
+  }
+
+  .faq-header{ display:flex; align-items:center; justify-content:space-between; gap: 8px; width: 100%; }
+  .faq-q{ flex: 1 1 auto; min-width: 0; }
+  .faq-toggle{ flex: 0 0 auto; flex-shrink: 0; margin-left: auto; min-width: 22px; text-align: right; line-height: 1; }
+
+  .faq-a-wrap { height: 0; overflow: hidden; transition: height 520ms cubic-bezier(0.65, 0, 0.35, 1); will-change: height; }
+
+  .faq-a {
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 120ms linear, transform 520ms cubic-bezier(0.65, 0, 0.35, 1);
+    border-top: 1px solid rgba(255,255,255,0.12);
+    border-color: transparent;
+    margin-top: 0;
+    padding-top: 0;
+  }
+
+  .faq-item.open .faq-a {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 260ms cubic-bezier(0.65, 0, 0.35, 1), transform 520ms cubic-bezier(0.65, 0, 0.35, 1);
+    border-color: rgba(255,255,255,0.12);
+    margin-top: 6px;
+    padding-top: 10px;
+  }
+
+  .faq-cta { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
+
+  .faq-cta-btn {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: center;
+    border: none;
+  }
+
+  .faq-cta-btn.primary{
+    padding: var(--cta-padding);
+    border-radius: var(--cta-radius);
+    background: var(--cta-bg);
+    color: var(--cta-text);
+    border: var(--cta-border);
+    font-size: var(--cta-font-size);
+    font-weight: var(--cta-font-weight);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    backdrop-filter: var(--cta-blur);
+    -webkit-backdrop-filter: var(--cta-blur);
+  }
+  .faq-cta-btn.primary:hover{ background: var(--cta-bg-hover); }
+
+  .faq-cta-btn.secondary { background: rgba(255,255,255,0.12); color: #fff; border: 1px solid rgba(255,255,255,0.25); }
+
+  #step-video { padding: 0; }
+  #step-video .step-content.video-only { padding: 0; gap: 0; }
+
+  .video-wrap { position: relative; flex: 1; width: 100%; height: 100%; background: rgb(5,5,5); overflow: hidden; }
+
+  /* oletus */
+  .video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+    z-index: 0;
+  }
+
+  @media (max-width: 480px) {
+    #step-video .video-wrap iframe {
+      inset: auto;           
+      top: 50%;
+      left: 50%;
+      width: 177.78vh;       
+      height: 100vh;
+      min-width: 100%;
+      min-height: 100%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .video-overlay-actions {
+    position: absolute;
+    left: 0; right: 0; bottom: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 0 16px 12px;
+    box-sizing: border-box;
+    z-index: 3;
+    pointer-events: none;
+  }
+  
+  .video-overlay-actions .btn { pointer-events: auto; width: 100%; }
+
+  #step-production .production-scroll{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .production-videos { display: flex; flex-direction: column; gap: 12px; }
+
+  .production-video {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: rgb(5,5,5);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .production-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  .custom-play-btn {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    border: 0px solid rgba(45,45,45,0.5);
+    background: rgba(125,125,125,0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(6px);
+    color: #fff;
+    font-size: 22px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  }
+  .custom-play-btn .play-icon{
+    width: 22px;
+    height: 22px;
+    display: block;
+    margin-left: 2px;
+  }
+  .custom-play-btn.is-hidden { opacity: 0; pointer-events: none; }
+
+  .video-click-overlay { position: absolute; inset: 0; z-index: 1; background: transparent; cursor: pointer; }
+
+  .widget-input, .widget-textarea {
+    width: 100%;
+    border-radius: 5px;
+    border: 1px solid rgba(40,40,40,0.4);
+    background: rgba(25,25,25);
+    color: #fff;
+    padding: 14px 14px;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+  }
+  
+  .widget-input {
+  	margin-bottom: 8px;
+  }
+  
+  .widget-textarea {
+  	margin-bottom: 3px;
+    resize: vertical;
+  }
+
+  .widget-input:focus, .widget-textarea:focus { border-color: #fff; }
+
+  .wf-widget-toggle {
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: url("https://cdn.prod.website-files.com/64e45acd7642683305495ca7/693c02f8672500f15be0c4b0_902407f662c732b630b11814e98f319e_nuutipaanane-widget-image.jpg") no-repeat center center;
+    background-size: cover;
+    border: 1px solid rgba(255,255,255,0.5);
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    z-index: 9998;
+    padding: 12px;
+  }
+
+  .wf-widget-close-outside {
+    position: fixed;
+    right: 15px;
+    bottom: 15px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.75);
+    border: 1px solid rgba(25,25,25,0.4);
+    backdrop-filter: blur(1.5px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+    cursor: pointer;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    font-family: var(--font);
+  }
+
+  /* ✅ hover: EI opacity-himmennystä */
+  .btn, .faq-cta-btn, .form-cta-btn, .custom-play-btn, .wf-widget-toggle, .wf-widget-close-outside, .faq-item, .wf-widget-expand, .wf-widget-back, .wf-widget-close {
+    transition: transform 140ms ease, background-color 140ms ease;
+    transform-origin: center;
+  }
+
+  .btn:hover, .faq-cta-btn:hover, .form-cta-btn:hover, .custom-play-btn:hover, .wf-widget-toggle:hover, .wf-widget-close-outside:hover, .wf-widget-expand:hover, .wf-widget-back:hover, .wf-widget-close:hover {
+    transform: scale(1.02);
+    opacity: 1;
+  }
+
+  /* pidetään FAQ-item ilman scalea kuten ennen */
+  .faq-item:hover { transform: none; opacity: 1; }
+
+  .video-loading { background: rgb(5,5,5); align-items: center; justify-content: center; }
+
+  .video-loading-logo {
+    width: 140px;
+    max-width: 60%;
+    opacity: 0.9;
+    animation: pulseLogo 1.4s ease-in-out infinite;
+  }
+
+  @keyframes pulseLogo {
+    0% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.7; }
+  }
+
+  #step-video-loading { padding: 0 !important; }
+  #step-video-loading .step-content {
+    padding: 0 !important;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(5,5,5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #step-video-loading .video-loading-logo { max-width: 180px; width: 60%; height: auto; }
+
+  @media (hover: none) {
+    .btn:hover, .faq-cta-btn:hover, .form-cta-btn:hover, .custom-play-btn:hover, .wf-widget-toggle:hover, .wf-widget-close-outside:hover, .faq-item:hover, .wf-widget-expand:hover, .wf-widget-close:hover {
+      transform: none;
+      opacity: 1;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .wf-widget {
+      left: 0; right: 0; top: 0; bottom: 0;
+      width: 100vw;
+      height: 100dvh;
+      max-width: none;
+      aspect-ratio: auto;
+      border-radius: 0;
+    }
+
+    .step:not(#step-video) { padding-bottom: 65px !important; }
+    #step-video .video-overlay-actions { padding-bottom: 65px !important; }
+
+    .wf-widget-toggle { right: 10px; bottom: 10px; }
+    .wf-widget-close-outside { right: 10px; bottom: 10px; }
+  }
